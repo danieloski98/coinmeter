@@ -1,0 +1,7 @@
+const Storage_Keys = {
+  NOTIFICATION_ACCEPTED: "NOTIFICATION_ACCEPTED",
+  NOTIFICATION_TOKEN: "NOTIFIACTION_TOKEN",
+  ASK_AGAIN: "ASK_AGAIN",
+};
+
+export default Storage_Keys;

@@ -1,37 +1,47 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import React from "react";
+import { Stack, SplashScreen } from "expo-router";
+import { useFonts } from "expo-font";
+import { StatusBar, View } from "react-native";
+import { ThemeProvider } from "@shopify/restyle";
+import { QueryClientProvider, QueryClient } from "react-query";
+import theme from "@/theme";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const queryClient = new QueryClient();
+  const [fontsLoaded, error] = useFonts({
+    SF_Bold: require("../assets/fonts/sf_bold.otf"),
+    SF_Medium: require("../assets/fonts/sf_medium.otf"),
+    SF_Regular: require("../assets/fonts/sf_regular.otf"),
   });
 
-  useEffect(() => {
-    if (loaded) {
+  React.useEffect(() => {
+    if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+  }, [fontsLoaded, error]);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <View style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <QueryClientProvider client={queryClient}>
+            <StatusBar
+              backgroundColor={"transparent"}
+              translucent
+              animated
+              barStyle={"light-content"}
+            />
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            >
+              <Stack.Screen name="index" />
+            </Stack>
+          </QueryClientProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </View>
   );
 }
