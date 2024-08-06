@@ -43,11 +43,10 @@ export default function Calculator() {
   }, [currency2Name, currency1Name, tab]);
 
   const calculate = React.useCallback(() => {
-
-    const dollarAmount = Number(currency1) * currency1DollarValue();
-    const convertedAmount = dollarAmount * dollarValForConvertedCurrency();
-    return convertedAmount.toFixed(2);
-  }, [currency1, dollarValForConvertedCurrency]);
+      let inUsd;
+      inUsd = Number(currency1) / currency1DollarValue();
+      return (inUsd * dollarValForConvertedCurrency()).toFixed(6);
+  }, [currency1, currency1Name, currency2Name, currency1DollarValue, dollarValForConvertedCurrency]);
 
 
   const theme = useTheme<Theme>();
@@ -89,9 +88,9 @@ export default function Calculator() {
           >
             <Feather name="arrow-down" size={25} color={"white"} />
           </Box>
-          <TextField value={currency1} onChange={(val) => setCurrency1(val)} name={currency1Name} setName={(val) => setCurrency1Name(val)} />
+          <TextField isFocused value={currency1} onChange={(val) => setCurrency1(val)} name={currency1Name} setName={(val) => setCurrency1Name(val)} />
           <Box height={5} />
-          <TextField value={calculate()} onChange={(val) => setCurrency2(val)} name={currency2Name} setName={(val) => setCurrency2Name(val)} isDisabled />
+          <TextField value={calculate() as any} onChange={(val) => setCurrency2(val)} name={currency2Name} setName={(val) => setCurrency2Name(val)} isDisabled />
         </Box>
 
         <Box
@@ -105,22 +104,10 @@ export default function Calculator() {
           </CustomText>
 
           <CustomText variant={"body"} color={"primaryColor"}>
-            $1 = {currencyMark(currency2Name)}{dollarValForConvertedCurrency().toFixed(2)}
+            $1 = {currencyMark(currency2Name)}{dollarValForConvertedCurrency().toFixed(6)}
           </CustomText>
         </Box>
 
-        {/* <ButtonWrapper
-          onPress={() => {}}
-          width={"100%"}
-          height={45}
-          backgroundColor={theme.colors.primaryColor}
-        >
-          <Box flex={1} justifyContent={"center"} alignItems={"center"}>
-            <CustomText variant={"body"} color={"black"}>
-              Convert
-            </CustomText>
-          </Box>
-        </ButtonWrapper> */}
       </Box>
     </KeyboardAvoidingView>
   );

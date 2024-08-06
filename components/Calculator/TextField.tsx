@@ -7,14 +7,20 @@ import CurrencyList from "./CurrenyList";
 import React from "react";
 import { formatCurrency } from "@/utils/formatcurrency";
 
-export default function TextField({ value, onChange, name, setName, isDisabled = false}: {
+export default function TextField({ value, onChange, name, setName, isDisabled = false, isFocused = false}: {
   value: string;
   onChange: (value: string) => void;
   name: "usd"|"ngn"|"bitcoin"|"thai baht",
   setName: (val: "usd"|"ngn"|"bitcoin"|"thai baht") => void,
   isDisabled?: boolean;
+  isFocused?: boolean;
 }) {
   const [showModal, setShowModal] = React.useState(false);
+  const ref = React.useRef<TextInput>(null);
+
+  React.useEffect(() => {
+    if (isFocused) ref.current?.focus();
+  }, [])
 
   return (
     <Box
@@ -56,6 +62,7 @@ export default function TextField({ value, onChange, name, setName, isDisabled =
         {!isDisabled && <CustomText variant={"subheader"} fontSize={isDisabled ? 20:20}>{currencyMark(name)}</CustomText>}
         {!isDisabled && (
           <TextInput
+            ref={ref}
             value={value}
             onChangeText={(val) => onChange(val)}
             keyboardType="number-pad"
@@ -63,6 +70,7 @@ export default function TextField({ value, onChange, name, setName, isDisabled =
               fontFamily: "SF_Medium",
               fontSize: 25,
               color: "white",
+              marginLeft: 5
             }}
             placeholderTextColor={"white"}
           />
@@ -73,7 +81,7 @@ export default function TextField({ value, onChange, name, setName, isDisabled =
             fontSize: 18,
             color: "white",
             marginRight: 10,
-          }}>{formatCurrency(parseFloat(value), currencyMark(name))}</CustomText>
+          }}>{currencyMark(name)}{" "}{value}</CustomText>
         )}
       </Box>
     </Box>

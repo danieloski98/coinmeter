@@ -57,7 +57,7 @@ export default function AssetCard({ item, type }: { item: ICurrency, type: 'BUY'
 
         <Box marginTop={"m"}>
           <CustomText variant={"header"} fontSize={30}>
-            {type === 'BUY' ? formatCurrency(item.buyPrice):formatCurrency(item.sellPrice)}
+            {type === 'BUY' ? item.buyPrice:item.sellPrice}
           </CustomText>
           <CustomText
             variant={"body"}

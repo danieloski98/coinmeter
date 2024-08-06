@@ -12,7 +12,7 @@ export function currencyMark(key: 'usd'|'ngn'|'bitcoin'|'thai baht') {
     const image = {
         usd: '$',
         ngn: 'NGN',
-        bitcoin: '$',
+        bitcoin: 'BTC',
         'thai baht': 'TBT',
     }
     return image[key];
