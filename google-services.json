@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "873975950695",
+    "project_id": "konfam-14ea1",
+    "storage_bucket": "konfam-14ea1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873975950695:android:4a30359ebdc318d279d3c2",
+        "android_client_info": {
+          "package_name": "com.emmi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBunbw6hEUbMQ9RXpAidEUN7oBAjQSVG2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873975950695:android:fb45bdeeb151e77c79d3c2",
+        "android_client_info": {
+          "package_name": "com.example.notificationapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBunbw6hEUbMQ9RXpAidEUN7oBAjQSVG2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,10 +6,16 @@ import { Feather } from "@expo/vector-icons";
 import theme from "@/theme";
 import NotificationItemCard from "@/components/notifications/NotificationItemCard";
 import ButtonWrapper from "@/components/ButtonWrapper";
-import { Alert } from "react-native";
+import { ActivityIndicator, Alert } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import Storage_Keys from "@/utils/storagekeys";
 import { router } from "expo-router";
+import { usePushNotification } from "@/hooks/usePushNotifications";
+import React from 'react';
+import { useMutation } from "react-query";
+import httpService from "@/utils/httpService";
+import { Urls } from "@/utils/urls";
+
 
 const data: { title: string; subTitle: string; icon: JSX.Element }[] = [
   {
@@ -34,9 +40,29 @@ const data: { title: string; subTitle: string; icon: JSX.Element }[] = [
 ];
 
 export default function Notification() {
+  const { callNotitifaction, expoPushToken } = usePushNotification();
+
+  const { isLoading, mutate } = useMutation({
+    mutationFn: (data: string) => httpService.post(Urls.uploadToken, { token: data }),
+    onSuccess: () => {
+      Alert.alert("Success", "Token uploaded successfully");
+      router.push("dashboard");
+    }, onError: (error: any) => {
+      Alert.alert("Error", error.response.data.message);
+    }
+  })
+
+  React.useEffect(() => {
+    console.log(`the push token is ${JSON.stringify(expoPushToken)}`);
+    if (expoPushToken) {
+      mutate(expoPushToken.data);
+    }
+  }, [expoPushToken]);
+
   const handlePress = (accepted: boolean) => {
     if (accepted) {
-      SecureStore.setItem(Storage_Keys.NOTIFICATION_ACCEPTED, "true");
+      callNotitifaction();
+      return;
     } else {
       SecureStore.setItem(Storage_Keys.NOTIFICATION_ACCEPTED, "false");
     }
@@ -118,9 +144,14 @@ export default function Notification() {
           height={48}
         >
           <Box flex={1} justifyContent={"center"} alignItems={"center"}>
-            <CustomText variant={"body"} color="black" fontSize={18}>
-              Allow notification
-            </CustomText>
+           { !isLoading && (
+             <CustomText variant={"body"} color="black" fontSize={18}>
+                Allow notification
+              </CustomText>
+           )}
+           { isLoading && (
+              <ActivityIndicator size={'small'} color={theme.colors.primaryColor} />
+           )}
           </Box>
         </ButtonWrapper>
 

@@ -13,14 +13,16 @@
       "backgroundColor": "#070B12"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.emmi"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.emmi"
+      "package": "com.emmi",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

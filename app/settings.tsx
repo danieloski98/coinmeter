@@ -79,12 +79,13 @@ export default function Settings() {
           header="Data Sources and Disclaimers"
           body="At Emmi Exchange, we strive for transparency in our data and operations."
           type="NAVIGATION"
-          action={() => setCheked((prev) => !prev)}
+          route="/disclaimer"
+          action={() => router.push("/disclaimer")}
         />
 
         <Items
           header="App Version"
-          body="0.1"
+          body="1.0"
           type="NONE"
           action={() => setCheked((prev) => !prev)}
         />
