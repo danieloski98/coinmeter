@@ -10,10 +10,25 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import BuyPage from "@/Views/Dashboard/Buy";
 import SellPage from "@/Views/Dashboard/Sell";
+import { useQuery } from "react-query";
+import httpService from "@/utils/httpService";
+import { Urls } from "@/utils/urls";
+import { ActivityIndicator } from "react-native";
+import { useSetAtom } from "jotai";
+import { currenciesAtom, defaultCurrencyAtom } from "@/state/currencies";
 
 export default function Dashboard() {
   const [tab, setTab] = React.useState(1);
   const theme = useTheme<Theme>();
+
+  const setCurrencies = useSetAtom(currenciesAtom);
+
+  const { isLoading, isError, data } = useQuery(["currency"], () => httpService.get(Urls.getCurrencies), {
+    refetchInterval: 3000,
+    onSuccess: (data) => {
+      setCurrencies(data?.data?.data);
+    }
+  });
   return (
     <Box flex={1} backgroundColor={"mainBackgroundColor"}>
       <Box flex={1} paddingHorizontal={"m"} paddingTop={"2xl"}>
@@ -29,10 +44,19 @@ export default function Dashboard() {
         <Box height={30} />
         <Tabbar onPress={(tab) => setTab(tab)} />
 
-        <Box flex={1}>
-          {tab === 1 && <BuyPage />}
-          {tab === 2 && <SellPage />}
-        </Box>
+          { isLoading && (
+            <Box flex={1} justifyContent={"center"} alignItems={"center"}>
+              <ActivityIndicator size={'small'} color={theme.colors.primaryColor} />
+              <CustomText variant={"body"}>Loading...</CustomText>
+            </Box>
+          )}
+
+        { !isLoading && !isError && (
+          <Box flex={1}>
+            {tab === 1 && <BuyPage data={data?.data?.data} />}
+            {tab === 2 && <SellPage data={data?.data?.data} />}
+          </Box>
+        )}
       </Box>
 
       {/* BUTTON */}

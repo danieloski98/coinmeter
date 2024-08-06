@@ -1,49 +1,45 @@
-import moment from "moment";
-import Box from "../Box";
-import CustomText from "../CustomText";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Box from "../Box";
+import { Image } from "expo-image";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/theme";
 import { router } from "expo-router";
 
-export default function Header() {
+export default function NavigationHeader() {
   const theme = useTheme<Theme>();
   return (
     <Box
       width={"100%"}
+      height={40}
       flexDirection={"row"}
       justifyContent={"space-between"}
-      marginTop={"m"}
+      marginTop={"3xl"}
+      alignItems={"center"}
     >
-      <Box>
-        <CustomText variant={"subheader"}>Today's Rate</CustomText>
-        <CustomText
-          variant={"body"}
-          color={"disabledTextColor"}
-          marginTop={"s"}
-        >
-          {moment().toDate().toDateString()}
-        </CustomText>
-      </Box>
-
       <TouchableOpacity
-        onPress={() => router.push("settings")}
+        onPress={() => router.back()}
         style={{
-          width: 40,
-          height: 40,
-          borderRadius: 20,
+          width: 30,
+          height: 30,
+          borderRadius: 30,
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: theme.colors.secondaryBackgroundColor,
         }}
       >
         <Feather
-          name="more-horizontal"
+          name="arrow-left"
           size={20}
           color={theme.colors.primaryColor}
         />
       </TouchableOpacity>
+      <Image
+        source={require("../../assets/images/darklogo.png")}
+        contentFit="contain"
+        style={{ width: 66, height: 38 }}
+      />
+      <Box />
     </Box>
   );
 }

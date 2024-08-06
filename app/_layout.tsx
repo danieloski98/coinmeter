@@ -17,7 +17,7 @@ export default function RootLayout() {
   });
 
   React.useEffect(() => {
-    if (fontsLoaded) {
+    if (fontsLoaded && !error) {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, error]);
