@@ -4,7 +4,7 @@
     "slug": "emmi",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/emmilogo2.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -16,10 +16,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.emmi"
     },
-    "android": {
+    "android": {      
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#62D6EE",
+        "backgroundImage": "./assets/images/emmilogo2.png"
       },
       "package": "com.emmi",
       "googleServicesFile": "./google-services.json"

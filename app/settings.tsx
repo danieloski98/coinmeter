@@ -7,6 +7,9 @@ import { router } from "expo-router";
 import React from "react";
 import { useTheme } from "@shopify/restyle";
 import { Theme } from "@/theme";
+import * as Notifications from "expo-notifications";
+import * as Linking from "expo-linking";
+import { Alert } from "react-native";
 
 interface ItemProps {
   type: "SWITCH" | "NAVIGATION" | "NONE";
@@ -60,6 +63,50 @@ const Items = ({ type, route, action, header, body, isCheck }: ItemProps) => {
 
 export default function Settings() {
   const [check, setCheked] = React.useState(false);
+
+  React.useEffect(() => {
+    checkNotificationPermissions();
+  }, []);
+
+  async function checkNotificationPermissions() {
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status === "granted") {
+      setCheked(true);
+    } else {
+      setCheked(false);
+    }
+  }
+
+  const togglePermission = React.useCallback(async () => {
+    let status;
+    if (check) {
+      Alert.alert(
+        "Notification",
+        "You are about to turn off notifications meaning you won't get notified of important changes when they happen ",
+        [
+          {
+            isPreferred: true,
+            text: "Proceed",
+            onPress: () => {
+              Linking.openSettings();
+            },
+            style: "destructive",
+          },
+          { isPreferred: true, text: "Cancel", style: "default" },
+        ]
+      );
+    } else {
+      // request the permission
+      const { status: newStatus } =
+        await Notifications.requestPermissionsAsync();
+      status = newStatus;
+      if (status === "granted") {
+        setCheked(true);
+      } else {
+        setCheked(false);
+      }
+    }
+  }, [check]);
   return (
     <Box
       flex={1}
@@ -73,7 +120,7 @@ export default function Settings() {
           body="Toggle off to stop receiving notification from us "
           type="SWITCH"
           isCheck={check}
-          action={() => setCheked((prev) => !prev)}
+          action={() => togglePermission()}
         />
         <Items
           header="Data Sources and Disclaimers"

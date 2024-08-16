@@ -8,30 +8,21 @@ import { Feather } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
 import Storage_Keys from "@/utils/storagekeys";
-import { PermissionStatus, getPermissionsAsync} from 'expo-notifications'
+import { PermissionStatus, getPermissionsAsync } from "expo-notifications";
 
 export default function Index() {
   async function getNotificationPermissionStatus() {
     const { status } = await getPermissionsAsync();
     return status;
   }
-  const handleNavigate = React.useCallback(async() => {
+  const handleNavigate = React.useCallback(async () => {
     const status = await getNotificationPermissionStatus();
     console.log(status);
     if (status === "granted") {
-      router.push("notification");
+      router.push("dashboard");
     } else {
       router.push("notification");
     }
-    // const notification = SecureStore.getItem(
-    //   Storage_Keys.NOTIFICATION_ACCEPTED,
-    // );
-    // console.log(notification);
-    // if (notification === null || notification === undefined) {
-    //   router.push("notification");
-    // } else {
-    //   router.push("dashboard");
-    // }
   }, []);
   return (
     <Box flex={1} backgroundColor={"mainBackgroundColor"}>
